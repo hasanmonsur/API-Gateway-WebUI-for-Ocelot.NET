@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject HttpClient Http
+
+<h3>Ocelot Configuration Editor</h3>
+
+<textarea @bind="_configJson" rows="20" cols="80"></textarea>
+<br />
+<button @onclick="LoadConfig">Load Config</button>
+<button @onclick="SaveConfig">Save Config</button>
+
+@code {
+    private string _configJson;
+
+    private async Task LoadConfig()
+    {
+        _configJson = await Http.GetStringAsync("http://localhost:5008/api/config");
+    }
+
+    private async Task SaveConfig()
+    {
+        await Http.PostAsJsonAsync("http://localhost:5008/api/config", _configJson);
+    }
+}
